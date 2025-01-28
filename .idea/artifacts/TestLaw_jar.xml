@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TestLaw:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TestLaw_jar</output-path>
+    <root id="archive" name="TestLaw.jar">
+      <element id="module-output" name="TestLaw" />
+      <element id="module-output" name="MoyuUniverse.Nya" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/yaml/snakeyaml/1.33/snakeyaml-1.33.jar" path-in-jar="/" />
+      <element id="file-copy" path="$PROJECT_DIR$/TestLaw/law.yml" />
+    </root>
+  </artifact>
+</component>
