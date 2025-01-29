@@ -11,6 +11,19 @@ public class Universe {
 
     public static void main(String[] args) {
 
+        {
+            File[] necessaryDictionaries = {new File("./config/")};
+            for (File necessaryDictionary : necessaryDictionaries) {
+                if (necessaryDictionary.isDirectory()){
+                    continue;
+                } else if (!necessaryDictionary.exists()) {
+                    necessaryDictionary.mkdir();
+                } else if (necessaryDictionary.isFile()) {
+                    
+                }
+            }
+        }
+
         File lawsDir = new File("laws");
         if (lawsDir.exists()) {
             if (!lawsDir.isDirectory()) {
@@ -21,7 +34,6 @@ public class Universe {
         }
 
         LawsManager lawsManager = new LawsManager(lawsDir);
-
 
         // 加载配置文件
         PublicConfig.read();
