@@ -5,16 +5,16 @@ import com.nekoyu.LawsLoader.Law;
 public class testlaw extends Law {
     @Override
     public void onPrepare() {
-        System.out.println("onPrepare");
+        logger.info("onPrepare");
     }
 
     @Override
     public void run() {
-        System.out.println("run");
+        logger.info("run");
     }
 
     @Override
     public void onStop() {
-        System.out.println("onStop");
+        logger.info("onStop");
     }
 }
