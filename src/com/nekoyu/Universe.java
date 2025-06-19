@@ -1,8 +1,6 @@
 package com.nekoyu;
 
-import com.nekoyu.API.ChatSessionManager;
 import com.nekoyu.LawsLoader.LawsManager;
-import org.apache.logging.log4j.core.config.Configurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,9 +8,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class Universe {
-    static public ConfigureProcessor PublicConfig = new ConfigureProcessor("YAML://config.yml");
-    static public ChatSessionManager chatSessionManager = new ChatSessionManager();
     static private Logger logger = LoggerFactory.getLogger(Universe.class);
+    static public ConfigureProcessor PublicConfig = new ConfigureProcessor("YAML://config.yml", logger);
 
     public static void main(String[] args) {
 
@@ -39,12 +36,7 @@ public class Universe {
         LawsManager lawsManager = new LawsManager(lawsDir);
 
         // 加载配置文件
-        try {
-            PublicConfig.read();
-        } catch (FileNotFoundException e) {
-            logger.warn("宇宙配置文件加载失败");
-            throw new RuntimeException(e);
-        }
+        PublicConfig.read();
 
         // 加载宇宙法则
         lawsManager.prepareLaws();

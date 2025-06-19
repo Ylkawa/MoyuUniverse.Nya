@@ -59,7 +59,7 @@ public class LawsManager {
 
                 laws.put(pluginName, law);
 
-                law.onPrepare();
+                law.prepare();
                 System.out.println("成功加载宇宙法则: " + pluginName);
 
             } catch (InstantiationException e) {
@@ -82,7 +82,7 @@ public class LawsManager {
     }
 
     public void disableLaws() {
-        laws.values().forEach(Law::onStop);
+        laws.values().forEach(Law::stop);
     }
 
 }

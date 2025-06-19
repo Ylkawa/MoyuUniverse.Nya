@@ -8,9 +8,9 @@ public abstract class Law {
 
     public Law() {}
 
-    public abstract void onPrepare();
+    public abstract void prepare();
 
     public abstract void run();
 
-    public abstract void onStop();
+    public abstract void stop();
 }

@@ -4,7 +4,7 @@ import com.nekoyu.LawsLoader.Law;
 
 public class testlaw extends Law {
     @Override
-    public void onPrepare() {
+    public void prepare() {
         logger.info("onPrepare");
     }
 
@@ -14,7 +14,7 @@ public class testlaw extends Law {
     }
 
     @Override
-    public void onStop() {
+    public void stop() {
         logger.info("onStop");
     }
 }

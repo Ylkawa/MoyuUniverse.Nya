@@ -1,7 +1,6 @@
 package com.nekoyu;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -17,7 +16,8 @@ public class ConfigureProcessor {
     String type = "";
     Logger logger;
 
-    public ConfigureProcessor(String uri){
+    public ConfigureProcessor(String uri, Logger logger){
+        this.logger = logger;
         setURI(uri);
     }
 
@@ -27,8 +27,14 @@ public class ConfigureProcessor {
         this.type = URI[0];
     }
 
-    public boolean read() throws FileNotFoundException {
-        Configure = new Yaml().loadAs(new FileReader(configureFile), Map.class);
+    public boolean read() {
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader(configureFile);
+        } catch (FileNotFoundException e) {
+            return false;
+        }
+        Configure = new Yaml().loadAs(fileReader, Map.class);
         return true;
     }
 
@@ -75,4 +81,10 @@ public class ConfigureProcessor {
     public void requireNode(String node, String pattern) {
         requiredNodes.put(node, pattern);
     }
+
+//    public boolean checkFor() {
+//        for (Map.Entry<String, String> entry : requiredNodes.entrySet()) {
+//
+//        }
+//    }
 }
