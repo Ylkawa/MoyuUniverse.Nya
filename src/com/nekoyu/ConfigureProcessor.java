@@ -2,6 +2,7 @@ package com.nekoyu;
 
 import org.slf4j.Logger;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.YAMLException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,6 +28,11 @@ public class ConfigureProcessor {
         this.type = URI[0];
     }
 
+    public ConfigureProcessor(File file, Logger logger) {
+        this.configureFile = file;
+        this.logger = logger;
+    }
+
     public boolean read() {
         FileReader fileReader = null;
         try {
@@ -34,8 +40,13 @@ public class ConfigureProcessor {
         } catch (FileNotFoundException e) {
             return false;
         }
-        Configure = new Yaml().loadAs(fileReader, Map.class);
-        return true;
+        try {
+            Configure = new Yaml().loadAs(fileReader, Map.class);
+            return true;
+        } catch (YAMLException e) {
+            logger.error("位于 {} 的配置文件无效", configureFile.getPath());
+            return false;
+        }
     }
 
     public Object getNode(String node){

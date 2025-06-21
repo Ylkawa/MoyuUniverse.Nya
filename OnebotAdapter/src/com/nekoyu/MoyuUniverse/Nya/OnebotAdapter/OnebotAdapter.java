@@ -2,59 +2,90 @@ package com.nekoyu.MoyuUniverse.Nya.OnebotAdapter;
 
 import com.nekoyu.ConfigureProcessor;
 import com.nekoyu.LawsLoader.Law;
-import org.java_websocket.client.WebSocketClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.YAMLException;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.*;
 
 
 /**
  * OnebotAdapter 的作用应该是，解析配置文件，然后按各 Channel 的配置 new channel，再运行 channel ，注册到 宇宙消息通道
  */
 public class OnebotAdapter extends Law {
-    ConfigureProcessor configure;
     boolean isReady = true;
     Logger logger = LoggerFactory.getLogger(this.getClass());
-    URI uri;
+    List<OnebotChannel> ocs = new ArrayList<>();
+
     @Override
     public void prepare() {
-        File configFileLoc = new File("./config/Onebot.yml");
-        if (configFileLoc.isFile()) { // 已经有了，直接用
-            configure = new ConfigureProcessor("YAML://./config/Onebot.yml", logger);
-        } else if (!configFileLoc.exists()) { // 这个配置文件不存在，创建一个
-            try {
-                configFileLoc.createNewFile();
+        // 按照目录下的 配置文件 依次加载若干个 OnebotChannel
+        File configFileLoc = new File("./config/Onebot-template.yml");
+        if (!configFileLoc.exists()) { // 这个配置文件不存在，创建一个
+            try (InputStream in = getClass().getClassLoader().getResourceAsStream("config-template/Onebot.yml")) {
+                if (in == null) {
+                    logger.error("无法在JAR包中找到默认配置文件 config-template/Onebot.yml");
+                    stop();
+                    isReady = false;
+                    return;
+                }
+                // 确保 config 文件夹存在
+                File configDir = new File("./config");
+                if (!configDir.exists()) {
+                    configDir.mkdirs();
+                }
+                // 复制文件
+                Files.copy(in, configFileLoc.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                logger.info("模板配置文件已生成: ./config/Onebot-template.yml");
             } catch (IOException e) {
+                logger.error("生成模板配置文件时出错", e);
+                stop();
                 isReady = false;
-                throw new RuntimeException(e);
             }
         } else if (configFileLoc.isDirectory()) { // 这里就不是我们该管的了，抽象
             stop();
             isReady = false;
+            return;
         }
-
-        // 检查 URI 格式
-        try {
-            uri = new URI((String) configure.getNode("ServiceURI"));
-        } catch (URISyntaxException e) {
-            stop();
-            logger.error(e.getMessage());
-            throw new RuntimeException(e);
+        // 对配置文件模板的存在状况检查完成
+        // 开始按照各个配置文件依次加载MessageChannel
+        File cfgDic = new File("./config/");
+        if (cfgDic.isDirectory()) for (File file : cfgDic.listFiles()) {
+            // 筛选出 后缀名为 yml 的文件
+            if (file.getName().endsWith(".yml")) {
+                ConfigureProcessor cp = new ConfigureProcessor(file, logger);
+                OnebotChannel oc = new OnebotChannel();
+                oc.token = cp.getNode("Token").toString();
+                oc.ID = cp.getNode("ID").toString();
+                try {
+                    URI uri = new URI(cp.getNode("URI").toString());
+                    oc.uri = uri;
+                } catch (URISyntaxException e) {
+                    logger.error(e.getMessage());
+                    break;
+                }
+                ocs.add(oc);
+            }
         }
-        // 至此才加载完配置文件，还没连接
     }
 
     @Override
     public void run() {
-
+        if (isReady) for (OnebotChannel oc : ocs) {
+            oc.load();
+        }
     }
 
     @Override
     public void stop() {
-
+        for (OnebotChannel oc : ocs) {
+            oc.stop();
+        }
     }
 }

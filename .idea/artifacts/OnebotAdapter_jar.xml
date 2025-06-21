@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="OnebotAdapter:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/OnebotAdapter_jar</output-path>
+    <root id="archive" name="OnebotAdapter.jar">
+      <element id="module-output" name="OnebotAdapter" />
+      <element id="file-copy" path="$PROJECT_DIR$/OnebotAdapter/law.yml" />
+    </root>
+  </artifact>
+</component>

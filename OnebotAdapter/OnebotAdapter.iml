@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="MoyuUniverse.Nya" />
     <orderEntry type="library" name="java.websocket.Java.WebSocket" level="project" />
+    <orderEntry type="library" name="yaml.snakeyaml" level="project" />
   </component>
 </module>
