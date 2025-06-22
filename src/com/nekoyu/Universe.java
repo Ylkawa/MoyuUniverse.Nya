@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class Universe {
-    static private Logger logger = LoggerFactory.getLogger(Universe.class);
+    static public Logger logger = LoggerFactory.getLogger(Universe.class);
     static public ConfigureProcessor PublicConfig = new ConfigureProcessor("YAML://config.yml", logger);
 
     public static void main(String[] args) {

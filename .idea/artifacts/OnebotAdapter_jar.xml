@@ -3,7 +3,10 @@
     <output-path>$PROJECT_DIR$/out/artifacts/OnebotAdapter_jar</output-path>
     <root id="archive" name="OnebotAdapter.jar">
       <element id="module-output" name="OnebotAdapter" />
-      <element id="file-copy" path="$PROJECT_DIR$/OnebotAdapter/law.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/OnebotAdapter/resources/law.yml" />
+      <element id="directory" name="config-template">
+        <element id="file-copy" path="$PROJECT_DIR$/OnebotAdapter/resources/Onebot.yml" />
+      </element>
     </root>
   </artifact>
 </component>

@@ -4,8 +4,6 @@ import com.nekoyu.ConfigureProcessor;
 import com.nekoyu.LawsLoader.Law;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.error.YAMLException;
 
 import java.io.*;
 import java.net.URI;
@@ -26,7 +24,7 @@ public class OnebotAdapter extends Law {
     @Override
     public void prepare() {
         // 按照目录下的 配置文件 依次加载若干个 OnebotChannel
-        File configFileLoc = new File("./config/Onebot-template.yml");
+        File configFileLoc = new File("./config/Onebot.yml.template");
         if (!configFileLoc.exists()) { // 这个配置文件不存在，创建一个
             try (InputStream in = getClass().getClassLoader().getResourceAsStream("config-template/Onebot.yml")) {
                 if (in == null) {
@@ -42,7 +40,7 @@ public class OnebotAdapter extends Law {
                 }
                 // 复制文件
                 Files.copy(in, configFileLoc.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                logger.info("模板配置文件已生成: ./config/Onebot-template.yml");
+                logger.info("模板配置文件已生成: ./config/Onebot.yml.template");
             } catch (IOException e) {
                 logger.error("生成模板配置文件时出错", e);
                 stop();

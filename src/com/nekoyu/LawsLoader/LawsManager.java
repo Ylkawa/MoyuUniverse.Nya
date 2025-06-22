@@ -1,5 +1,7 @@
 package com.nekoyu.LawsLoader;
 
+import com.nekoyu.Universe;
+
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -60,15 +62,15 @@ public class LawsManager {
                 laws.put(pluginName, law);
 
                 law.prepare();
-                System.out.println("成功加载宇宙法则: " + pluginName);
+                Universe.logger.info("成功加载宇宙法则: " + pluginName);
 
             } catch (InstantiationException e) {
-                System.out.println("无法实例化类，确保它有无参构造函数: " + e.getMessage());
+                Universe.logger.warn("无法实例化类，确保它有无参构造函数: " + e.getMessage());
             } catch (ClassNotFoundException e) {
-                System.out.println("无法找到主类 " + e.getMessage());
+                Universe.logger.warn("无法找到主类 " + e.getMessage());
             } catch (Exception e) {
+                Universe.logger.warn("加载宇宙法则失败: " + jarFile.getName());
                 e.printStackTrace();
-                System.out.println("加载宇宙法则失败: " + jarFile.getName());
             }
         }
     }
