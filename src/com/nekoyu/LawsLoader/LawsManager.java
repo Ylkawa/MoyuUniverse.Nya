@@ -40,9 +40,9 @@ public class LawsManager {
                 var properties = new java.util.Properties();
                 properties.load(inputStream);
                 String mainClass = properties.getProperty("main");
-                String pluginName = properties.getProperty("name");
+                String lawName = properties.getProperty("name");
 
-                if (mainClass == null || pluginName == null) {
+                if (mainClass == null || lawName == null) {
                     System.out.println("law.yml 中缺少必要的 main 或 name 属性: " + jarFile.getName());
                     continue;
                 }
@@ -58,11 +58,11 @@ public class LawsManager {
 
                 // 确保调用无参构造函数
                 Law law = (Law) clazz.getDeclaredConstructor().newInstance();
-
-                laws.put(pluginName, law);
-
                 law.prepare();
-                Universe.logger.info("成功加载宇宙法则: " + pluginName);
+
+                laws.put(lawName, law);
+
+                Universe.logger.info("成功加载宇宙法则: " + lawName);
 
             } catch (InstantiationException e) {
                 Universe.logger.warn("无法实例化类，确保它有无参构造函数: " + e.getMessage());
@@ -73,10 +73,6 @@ public class LawsManager {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void prepareLaws() {
-        laws.values().forEach(Law::run);
     }
 
     public void enableLaws() {

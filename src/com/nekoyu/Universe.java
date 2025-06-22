@@ -5,14 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 public class Universe {
     static public Logger logger = LoggerFactory.getLogger(Universe.class);
     static public ConfigureProcessor PublicConfig = new ConfigureProcessor("YAML://config.yml", logger);
 
     public static void main(String[] args) {
-
         {
             File[] necessaryDictionaries = {new File("./config/"), new File("./laws/")};
             for (File necessaryDictionary : necessaryDictionaries) {
@@ -24,7 +22,7 @@ public class Universe {
             }
         }
 
-        File lawsDir = new File("laws");
+        File lawsDir = new File("laws/");
         if (lawsDir.exists()) {
             if (!lawsDir.isDirectory()) {
                 logger.warn("无法加载宇宙法则，因为laws路径被文件占用");
@@ -39,7 +37,6 @@ public class Universe {
         PublicConfig.read();
 
         // 加载宇宙法则
-        lawsManager.prepareLaws();
         lawsManager.loadLaws();
         lawsManager.enableLaws();
 

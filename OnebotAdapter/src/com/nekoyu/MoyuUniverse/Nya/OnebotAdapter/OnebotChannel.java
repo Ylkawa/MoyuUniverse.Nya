@@ -2,16 +2,12 @@ package com.nekoyu.MoyuUniverse.Nya.OnebotAdapter;
 
 import com.nekoyu.API.MessageChannel;
 import com.nekoyu.API.Session;
-import com.nekoyu.ConfigureProcessor;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +40,7 @@ public class OnebotChannel extends MessageChannel {
         wsConnection = new WebSocketClient(uri, header) {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
-
+                logger.info("{} 连接成功", ID);
             }
 
             @Override
@@ -59,9 +55,10 @@ public class OnebotChannel extends MessageChannel {
 
             @Override
             public void onError(Exception e) {
-
+                logger.error(e.getMessage());
             }
         };
+        wsConnection.connect();
     }
 
     @Override

@@ -31,6 +31,17 @@ public class ConfigureProcessor {
     public ConfigureProcessor(File file, Logger logger) {
         this.configureFile = file;
         this.logger = logger;
+        FileReader fileReader;
+        try {
+            fileReader = new FileReader(configureFile);
+        } catch (FileNotFoundException e) {
+            return;
+        }
+        try {
+            Configure = new Yaml().loadAs(fileReader, Map.class);
+        } catch (YAMLException e) {
+            logger.error("位于 {} 的配置文件无效", configureFile.getPath());
+        }
     }
 
     public boolean read() {
