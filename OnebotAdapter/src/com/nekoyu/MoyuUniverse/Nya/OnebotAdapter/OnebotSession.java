@@ -1,7 +1,7 @@
 package com.nekoyu.MoyuUniverse.Nya.OnebotAdapter;
 
-import com.nekoyu.API.Session;
+import com.nekoyu.API.MessageSession;
 
-public interface OnebotSession extends Session {
+public interface OnebotSession extends MessageSession {
 
 }
